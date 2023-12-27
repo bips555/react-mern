@@ -8,7 +8,7 @@ const HomePage = ({ title }) => {
 
   const clickListen = () => {
     // titleset("updated title")
-    console.log("i have been clicked");
+    console.log("i have been clickeds");
   };
 
   return (
