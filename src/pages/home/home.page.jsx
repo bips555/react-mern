@@ -2,15 +2,29 @@ import { ButtonComponent } from "../../components/common/button/button.component
 import { Form } from "react-bootstrap";
 import { H1 } from "../../components/common/heading/heading.component";
 import { Heading } from "../../components/common/heading/heading.component";
-// import { useState } from "react";
-const HomePage = ({ title }) => {
-  // const [title,titleset] = useState("Default value")
-
+import { useEffect, useState } from "react";
+const HomePage = () => {
+  const [title, settitle] = useState("default value");
+  const [loading, setloading] = useState();
   const clickListen = () => {
-    // titleset("updated title")
+    settitle("updated title");
+    setloading(false);
     console.log("i have been clickeds");
   };
 
+  useEffect(() => {
+    console.log("i am always called");
+  });
+
+  useEffect(() => {
+    console.log("i am once called");
+    setloading(true);
+  }, []);
+
+  useEffect(() => {
+    console.log("i am only called when title gets changed ");
+  }, [title, loading]);
+  
   return (
     <div>
       <H1 value={title}></H1>
