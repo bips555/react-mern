@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ButtonComponent } from "../../components/common/button/button.component";
 import { Form } from "react-bootstrap";
 import { H1 } from "../../components/common/heading/heading.component";
@@ -6,6 +7,7 @@ import { useEffect, useState } from "react";
 const HomePage = () => {
   const [title, settitle] = useState("default value");
   const [loading, setloading] = useState();
+  let [counter,setcounter]=useState(0)
   const clickListen = () => {
     settitle("updated title");
     setloading(false);
@@ -22,11 +24,16 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    console.log("i am only called when title gets changed ");
-  }, [title, loading]);
-  
+    console.log("i am only called when state in srrays  gets changed ");
+  }, [title, loading,counter]);
+const increasecount=()=>
+{
+  setcounter(++counter)
+}
   return (
     <div>
+      <p>cliked for:{counter}</p>
+      <button onClick= {(increasecount)}>click here</button>
       <H1 value={title}></H1>
       <Heading type="h1" value={title}></Heading>
       <ButtonComponent
