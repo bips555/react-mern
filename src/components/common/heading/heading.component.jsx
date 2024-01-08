@@ -1,5 +1,5 @@
 /* eslint-disable no-unreachable */
-
+import styled from "styled-components";
 export const Heading = ({ type, value }) => {
   switch (type) {
     case "h1": {
@@ -44,3 +44,14 @@ export const H4 = ({ value }) => {
 export const H5 = ({ value }) => {
   return <h5>{value}</h5>;
 };
+export const Title = styled.h1`
+  color: papayawhip;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px 20px;
+  margin-top: 10px;
+`;
+export const Divider = styled.hr`
+  border-color: white;
+`;

@@ -9,7 +9,7 @@ import React from "react"
 //     )
 // }
 
-class HomePage extends React.Component
+class HPage extends React.Component
 {
     constructor(props)
     {
@@ -68,4 +68,4 @@ componentWillUnmount=()=>
 
 }
 
-export default HomePage
+export default HPage
