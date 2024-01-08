@@ -10,7 +10,7 @@ import { Title } from "../../../../components/common/heading/heading.component.j
 import { Divider } from "../../../../components/common/heading/heading.component.jsx";
 const options = [
   { value: "seller", label: "Seller" },
-  { value: "customer", label: "Buyer" }
+  { value: "customer", label: "Buyer" },
 ];
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,8 +20,8 @@ const RegisterPage = () => {
     name: Yup.string().min(2).max(30).required(),
     email: Yup.string().email().required(),
     role: Yup.object({
-      value:Yup.string().matches(/customer|seller/),
-      label:Yup.string().matches(/Buyer|Seller/)
+      value: Yup.string().matches(/customer|seller/),
+      label: Yup.string().matches(/Buyer|Seller/),
     }).required(),
   });
   const {
@@ -88,8 +88,8 @@ const RegisterPage = () => {
                 <Col sm={9}>
                   <Select
                     options={options}
-                    isMulti
                     onChange={(e) => {
+                      console.log(options);
                       setValue("role", e);
                     }}
                   />
