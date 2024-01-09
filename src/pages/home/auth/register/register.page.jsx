@@ -14,6 +14,9 @@ const options = [
 ];
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
+
+import authService from "../auth.service.js";
 const RegisterPage = () => {
   const [thumb, setThumb] = useState();
   const registerSchema = Yup.object({
@@ -33,10 +36,26 @@ const RegisterPage = () => {
   } = useForm({
     resolver: yupResolver(registerSchema),
   });
-  const registerSubmit = (data) => {
+  const registerSubmit =async  (data) => {
+   try
+   {
     data.role = data.role.value;
     console.log(data);
-  };
+const response =await authService.registerProcess(data)
+console.log(response)
+toast.success(response.data.msg)
+   }
+   catch(exception)
+   {
+console.log(exception)
+toast.error(exception.response.data.message)
+exception.response.data.result.map((obj)=>
+{
+  const keys = Object.keys(obj);
+  setError(keys[0],obj[keys[0]])
+})
+   }
+  }
   return (
     <>
       <Container className="register-wrapper opacity-75 mt-5">
