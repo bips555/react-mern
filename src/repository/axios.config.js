@@ -10,4 +10,27 @@ const axiosInstance = axios.create({
 
 
 })
+
+axiosInstance.interceptors.response.use(
+    (response)=>
+    {
+return response.data
+    },
+    (error)=>
+    {
+        if(error.response.status === 401)
+        {
+
+// todo:clear
+// todo :redirect to login screen
+// refresh token ===> refresh token
+// 
+
+        }
+throw error.response.data
+    }
+)
+
+
+
 export default axiosInstance

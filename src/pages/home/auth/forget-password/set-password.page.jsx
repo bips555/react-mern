@@ -1,19 +1,44 @@
-import { Container,Col,Row } from "react-bootstrap"
-import { Title } from "../../../../components/common/heading/heading.component.jsx"
-
-import { Divider } from "../../../../components/common/heading/heading.component.jsx"
-import PasswordSetComponent from "../../../../components/home/auth/password-set.component.jsx"
+import { Container, Col, Row, Spinner } from "react-bootstrap";
+import { Title } from "../../../../components/common/heading/heading.component.jsx";
+import { Divider } from "../../../../components/common/heading/heading.component.jsx";
+import PasswordSetComponent from "../../../../components/home/auth/password-set.component.jsx";
+import authService from "../auth.service.js";
+import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const SetpasswordPage = () => {
+  const params = useParams();
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
+  const verifyToken = async () => {
+    try {
+      const verified = await authService.getActivationTokenVerify(params.token);
+console.log(verified)
+     setLoading(false)
+    } catch (exception) {
+      console.log('exception',exception)
+      toast.error(exception.message);
+      navigate('/login')
+    }
+  };
+  useEffect(() => {
+    verifyToken();
+  }, [params]);
 
-
-const submitEvent = (data) =>
-{
-console.log(data)
-
-
-}
-
+  const submitEvent = async (data) => {
+   try
+   {
+let response = await authService.activateUser(params.token,data)
+toast.success(response.message)
+navigate('/login')
+   }
+   catch(exception)
+   {
+toast.error(exception.message)
+navigate('/')
+   }
+  };
 
   return (
     <>
@@ -24,15 +49,20 @@ console.log(data)
           </Col>
         </Row>
         <Divider></Divider>
-        <Row className="my-3 pb-5">
+        <Row className="my-3 pb-5 text-center">
           <Col sm={12} md={{ offset: 3, span: 6 }}>
-         <PasswordSetComponent submitEvent={submitEvent}/>
-           
+            {(loading) ? 
+              <>
+                <Spinner variant="light" />
+              </>
+             : (
+              <PasswordSetComponent submitEvent={submitEvent} />
+            )}
           </Col>
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default SetpasswordPage
+export default SetpasswordPage;

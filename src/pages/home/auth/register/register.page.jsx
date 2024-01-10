@@ -17,8 +17,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 
 import authService from "../auth.service.js";
+import { useNavigate } from "react-router-dom";
 const RegisterPage = () => {
   const [thumb, setThumb] = useState();
+  const [loading,setLoading] = useState(false)
+  const navigate = useNavigate()
   const registerSchema = Yup.object({
     name: Yup.string().min(2).max(30).required(),
     email: Yup.string().email().required(),
@@ -39,21 +42,27 @@ const RegisterPage = () => {
   const registerSubmit =async  (data) => {
    try
    {
+    setLoading(true)
     data.role = data.role.value;
     console.log(data);
 const response =await authService.registerProcess(data)
 console.log(response)
-toast.success(response.data.msg)
+toast.success(response.msg)
+
+navigate('/')
    }
    catch(exception)
    {
 console.log(exception)
-toast.error(exception.response.data.message)
-exception.response.data.result.map((obj)=>
-{
-  const keys = Object.keys(obj);
-  setError(keys[0],obj[keys[0]])
-})
+toast.error(exception.message)
+// exception.response.data.result.map((obj)=>
+// {
+//   const keys = Object.keys(obj);
+//   setError(keys[0],obj[keys[0]])
+// })
+   }
+   finally{
+    setLoading(false)
    }
   }
   return (
@@ -74,7 +83,7 @@ exception.response.data.result.map((obj)=>
                 </Form.Label>
                 <Col sm={9}>
                   <Form.Control
-                    {...register("name", { required: true })}
+                    {...register("name", { required: true ,disabled:loading})}
                     placeholder="Enter your Name"
                     type="text"
                     required
@@ -90,10 +99,12 @@ exception.response.data.result.map((obj)=>
                 </Form.Label>
                 <Col sm={9}>
                   <Form.Control
-                    {...register("email", { required: true })}
+                    {...register("email", { required: true,
+                      disabled:loading })}
                     placeholder="Enter your Email"
                     type="email"
                     required
+                  
                   />
                   <span className="text-danger">
                     <em>{errors?.email?.message}</em>
@@ -106,6 +117,7 @@ exception.response.data.result.map((obj)=>
                 </Form.Label>
                 <Col sm={9}>
                   <Select
+                  isDisabled={loading}
                     options={options}
                     onChange={(e) => {
                       console.log(options);
@@ -124,6 +136,7 @@ exception.response.data.result.map((obj)=>
                 <Col sm={7}>
                   <Form.Control
                     type="file"
+                    disabled={loading}
                     multiple
                     onChange={(e) => {
                       // const files = Object.values(e.target.files);
@@ -166,12 +179,14 @@ exception.response.data.result.map((obj)=>
 
               <Form.Group className="row mb-3 text-center">
                 <Col sm={{ offset: 3, span: 9 }}>
-                  <ButtonComponent
+                  <ButtonComponent 
+                  loading={loading}
                     className="btn-danger me-2 "
                     type="reset"
                     label="Cancel"
                   />
-                  <ButtonComponent type="submit" label="Register" />
+                  <ButtonComponent
+                  loading={loading} type="submit" label="Register" />
                 </Col>
               </Form.Group>
 

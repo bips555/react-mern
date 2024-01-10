@@ -11,6 +11,14 @@ this.headers = {}
         "Content-Type":"multipart/form-data"
        }
     }
+
+    if(config && config.auth)
+    {
+        this.headers = {
+            ...this.headers,
+            "Authorization":"Bearer"
+        }
+    }
 }
     
     postRequest = async (url,data={},config=null) =>
@@ -26,6 +34,22 @@ return response
         catch(exception)
         {
             console.log("postreq: ",exception)
+            throw exception
+        }
+    }
+    getRequest = async (url,config=null) =>
+    {
+        try
+        {
+           this.getHeader(config)
+let response = await axiosInstance.get(url,{
+    headers :this.headers
+})
+return response
+        }
+        catch(exception)
+        {
+            console.log("getreq: ",exception)
             throw exception
         }
     }
